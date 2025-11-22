@@ -5,7 +5,8 @@ import LikeButton from '@/components/LikeButton';
 import BookmarkButton from '@/components/BookmarkButton';
 import ShareButtons from '@/components/ShareButtons';
 import CommentSection from '@/components/CommentSection';
-import { Calendar, User as UserIcon } from 'lucide-react';
+import { Calendar, User as UserIcon, Eye, Clock } from 'lucide-react';
+import { calculateReadingTime } from '@/lib/utils';
 import { cookies } from 'next/headers';
 import { verifyJWT } from '@/lib/auth';
 
