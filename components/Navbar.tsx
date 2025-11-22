@@ -66,9 +66,17 @@ export default function Navbar() {
                                         </Link>
                                         <Link
                                             href="/admin/users"
-                                            className="flex items-center px-3 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            role="menuitem"
                                         >
-                                            Users
+                                            Quản lý người dùng
+                                        </Link>
+                                        <Link
+                                            href="/admin/comments"
+                                            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
+                                            role="menuitem"
+                                        >
+                                            Quản lý bình luận
                                         </Link>
                                         <Link
                                             href="/admin/analytics"

@@ -12,9 +12,12 @@ export async function GET(
 
         // Get all comments for this post
         const allComments = await prisma.comment.findMany({
-            where: { postId: id },
+            where: {
+                postId: id,
+                status: { not: 'REJECTED' }
+            },
             include: {
-                author: {
+                user: {
                     select: {
                         name: true,
                         email: true,
@@ -96,7 +99,7 @@ export async function POST(
                 parentId: parentId || null,
             },
             include: {
-                author: {
+                user: {
                     select: {
                         name: true,
                         email: true,
