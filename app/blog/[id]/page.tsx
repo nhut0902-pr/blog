@@ -95,6 +95,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
         notFound();
     }
 
+    const readingTime = calculateReadingTime(post.content);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
     // JSON-LD Structured Data for SEO
