@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { User, Reply, MessageCircle } from 'lucide-react';
+import { User, Reply, MessageCircle, Edit2, Trash2, X, Check } from 'lucide-react';
 
 import ReactionButton from './ReactionButton';
 
@@ -16,6 +16,9 @@ interface Comment {
     };
     replies?: Comment[];
     reactions: { type: string; userId: string }[];
+    isEdited: boolean;
+    editedAt?: string;
+    userId: string;
 }
 
 interface CommentThreadProps {
@@ -27,8 +30,11 @@ interface CommentThreadProps {
 
 export default function CommentThread({ comment, onReply, depth = 0, currentUserId }: CommentThreadProps) {
     const [showReplyForm, setShowReplyForm] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
+    const [editContent, setEditContent] = useState(comment.content);
     const [replyContent, setReplyContent] = useState('');
     const [submitting, setSubmitting] = useState(false);
+    const [commentData, setCommentData] = useState(comment);
 
     const handleReplySubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -41,18 +47,70 @@ export default function CommentThread({ comment, onReply, depth = 0, currentUser
         setSubmitting(false);
     };
 
+    const handleEditSubmit = async () => {
+        if (!editContent.trim() || editContent === commentData.content) {
+            setIsEditing(false);
+            return;
+        }
+
+        setSubmitting(true);
+        try {
+            const res = await fetch(`/api/comments/${comment.id}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ content: editContent }),
+            });
+
+            if (res.ok) {
+                const updated = await res.json();
+                setCommentData({ ...commentData, content: updated.content, isEdited: true });
+                setIsEditing(false);
+            } else {
+                const error = await res.json();
+                alert(error.error || 'Failed to update comment');
+            }
+        } catch (error) {
+            console.error('Error updating comment:', error);
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    const handleDelete = async () => {
+        if (!confirm('Are you sure you want to delete this comment?')) return;
+
+        try {
+            const res = await fetch(`/api/comments/${comment.id}`, {
+                method: 'DELETE',
+            });
+
+            if (res.ok) {
+                // Ideally, we should remove it from the list in parent, but for now reload
+                window.location.reload();
+            }
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+        }
+    };
+
     const maxDepth = 2; // Limit nesting to 2 levels
     const canReply = depth < maxDepth;
 
+    // Check if editable (within 5 minutes)
+    const isAuthor = currentUserId === comment.userId;
+    const createdAt = new Date(comment.createdAt).getTime();
+    const now = new Date().getTime();
+    const isEditable = isAuthor && (now - createdAt) < 5 * 60 * 1000;
+
     return (
         <div className={`${depth > 0 ? 'ml-8 mt-4' : 'mb-6'}`}>
-            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700">
+            <div className="bg-white dark:bg-gray-800 rounded-lg p-4 border border-gray-200 dark:border-gray-700 group">
                 <div className="flex items-start space-x-3">
                     <div className="flex-shrink-0">
-                        {comment.user.avatarUrl ? (
+                        {commentData.user.avatarUrl ? (
                             <img
-                                src={comment.user.avatarUrl}
-                                alt={comment.user.name}
+                                src={commentData.user.avatarUrl}
+                                alt={commentData.user.name}
                                 className="w-10 h-10 rounded-full"
                             />
                         ) : (
@@ -63,18 +121,70 @@ export default function CommentThread({ comment, onReply, depth = 0, currentUser
                     </div>
 
                     <div className="flex-1 min-w-0">
-                        <div className="flex items-center space-x-2 mb-1">
-                            <span className="font-medium text-gray-900 dark:text-white">
-                                {comment.user.name}
-                            </span>
-                            <span className="text-sm text-gray-500 dark:text-gray-400">
-                                {new Date(comment.createdAt).toLocaleDateString('vi-VN')}
-                            </span>
+                        <div className="flex items-center justify-between mb-1">
+                            <div className="flex items-center space-x-2">
+                                <span className="font-medium text-gray-900 dark:text-white">
+                                    {commentData.user.name}
+                                </span>
+                                <span className="text-sm text-gray-500 dark:text-gray-400">
+                                    {new Date(commentData.createdAt).toLocaleDateString('vi-VN')}
+                                </span>
+                                {commentData.isEdited && (
+                                    <span className="text-xs text-gray-400 italic">(edited)</span>
+                                )}
+                            </div>
+
+                            {isAuthor && (
+                                <div className="flex items-center space-x-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    {isEditable && !isEditing && (
+                                        <button
+                                            onClick={() => setIsEditing(true)}
+                                            className="text-gray-400 hover:text-indigo-600 transition-colors"
+                                            title="Edit (within 5 mins)"
+                                        >
+                                            <Edit2 size={14} />
+                                        </button>
+                                    )}
+                                    <button
+                                        onClick={handleDelete}
+                                        className="text-gray-400 hover:text-red-600 transition-colors"
+                                        title="Delete"
+                                    >
+                                        <Trash2 size={14} />
+                                    </button>
+                                </div>
+                            )}
                         </div>
 
-                        <p className="text-gray-700 dark:text-gray-300 mb-2">
-                            {comment.content}
-                        </p>
+                        {isEditing ? (
+                            <div className="mt-2">
+                                <textarea
+                                    value={editContent}
+                                    onChange={(e) => setEditContent(e.target.value)}
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white resize-none"
+                                    rows={2}
+                                />
+                                <div className="flex justify-end space-x-2 mt-2">
+                                    <button
+                                        onClick={() => setIsEditing(false)}
+                                        className="p-1 text-gray-500 hover:text-gray-700 dark:text-gray-400"
+                                    >
+                                        <X size={18} />
+                                    </button>
+                                    <button
+                                        onClick={handleEditSubmit}
+                                        disabled={submitting}
+                                        className="p-1 text-green-600 hover:text-green-700"
+                                    >
+                                        <Check size={18} />
+                                    </button>
+                                </div>
+                            </div>
+                        ) : (
+                            <p className="text-gray-700 dark:text-gray-300 mb-2 whitespace-pre-wrap">
+                                {commentData.content}
+                            </p>
+                        )}
 
                         <div className="flex items-center space-x-4 mt-2">
                             <ReactionButton
