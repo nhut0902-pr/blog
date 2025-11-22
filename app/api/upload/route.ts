@@ -1,72 +1,65 @@
 import { NextResponse } from 'next/server';
-import { writeFile, mkdir } from 'fs/promises';
-import { join } from 'path';
-import sharp from 'sharp';
-import { verifyJWT } from '@/lib/auth';
-import { cookies } from 'next/headers';
+import { v2 as cloudinary } from 'cloudinary';
+
+// Configure Cloudinary
+cloudinary.config({
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 export async function POST(request: Request) {
     try {
-        const cookieStore = await cookies();
-        const token = cookieStore.get('token')?.value;
-
-        if (!token) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
-        const payload = await verifyJWT(token);
-        if (!payload) {
-            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-        }
-
         const formData = await request.formData();
         const file = formData.get('file') as File;
 
         if (!file) {
-            return NextResponse.json({ error: 'No file uploaded' }, { status: 400 });
+            return NextResponse.json({ error: 'No file provided' }, { status: 400 });
         }
 
         // Validate file type
-        const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        if (!allowedTypes.includes(file.type)) {
-            return NextResponse.json({ error: 'Invalid file type. Only JPEG, PNG, and WebP are allowed.' }, { status: 400 });
+        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+        if (!validTypes.includes(file.type)) {
+            return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
         }
 
-        // Validate file size (max 5MB)
+        // Validate file size (5MB max)
         const maxSize = 5 * 1024 * 1024;
         if (file.size > maxSize) {
-            return NextResponse.json({ error: 'File too large. Maximum size is 5MB.' }, { status: 400 });
+            return NextResponse.json({ error: 'File too large (max 5MB)' }, { status: 400 });
         }
 
+        // Convert file to buffer
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Generate unique filename
-        const timestamp = Date.now();
-        const randomString = Math.random().toString(36).substring(2, 15);
-        const filename = `${timestamp}-${randomString}.webp`;
+        // Upload to Cloudinary
+        const result = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.uploader.upload_stream(
+                {
+                    folder: 'blog-uploads',
+                    transformation: [
+                        { width: 1200, crop: 'limit' },
+                        { quality: 'auto' },
+                        { fetch_format: 'auto' },
+                    ],
+                },
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result);
+                }
+            );
 
-        // Ensure uploads directory exists
-        const uploadsDir = join(process.cwd(), 'public', 'uploads');
-        await mkdir(uploadsDir, { recursive: true });
+            uploadStream.end(buffer);
+        });
 
-        // Optimize and convert to WebP
-        const optimizedBuffer = await sharp(buffer)
-            .resize(1200, 1200, {
-                fit: 'inside',
-                withoutEnlargement: true,
-            })
-            .webp({ quality: 85 })
-            .toBuffer();
+        const uploadResult = result as any;
 
-        // Save file
-        const filepath = join(uploadsDir, filename);
-        await writeFile(filepath, optimizedBuffer);
-
-        // Return public URL
-        const url = `/uploads/${filename}`;
-        return NextResponse.json({ url });
-    } catch (error: any) {
+        return NextResponse.json({
+            url: uploadResult.secure_url,
+            publicId: uploadResult.public_id,
+        });
+    } catch (error) {
         console.error('Upload error:', error);
         return NextResponse.json({ error: 'Error uploading file' }, { status: 500 });
     }
