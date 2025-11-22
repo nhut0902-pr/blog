@@ -30,7 +30,7 @@ export async function PUT(
             return NextResponse.json({ error: 'Comment not found' }, { status: 404 });
         }
 
-        if (comment.userId !== payload.userId) {
+        if (comment.userId !== payload.sub) {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 
@@ -86,7 +86,7 @@ export async function DELETE(
         }
 
         // Allow author or admin to delete
-        if (comment.userId !== payload.userId && payload.role !== 'ADMIN') {
+        if (comment.userId !== payload.sub && payload.role !== 'ADMIN') {
             return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
         }
 

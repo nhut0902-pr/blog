@@ -22,7 +22,7 @@ export async function POST(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
-        const userId = payload.userId as string;
+        const userId = payload.sub as string;
 
         // Check if reaction already exists
         const existingReaction = await prisma.commentReaction.findUnique({
