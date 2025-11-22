@@ -23,6 +23,7 @@ model User {
   bookmarks             Bookmark[]
   notificationsReceived Notification[] @relation("NotificationRecipient")
   notificationsSent     Notification[] @relation("NotificationSender")
+  commentReactions      CommentReaction[]
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 }
@@ -57,14 +58,39 @@ model Category {
 model Comment {
   id        String   @id @default(cuid())
   content   String
-  postId    String
   post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
-  userId    String
+  postId    String
   user      User     @relation(fields: [userId], references: [id])
+  userId    String
   parentId  String?
   parent    Comment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
   replies   Comment[] @relation("CommentReplies")
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt @default(now())
+  
+  // Enhanced features
+  isEdited  Boolean           @default(false)
+  editedAt  DateTime?
+  status    CommentStatus     @default(APPROVED)
+  reactions CommentReaction[]
+}
+
+enum CommentStatus {
+  APPROVED
+  PENDING
+  REJECTED
+}
+
+model CommentReaction {
+  id        String   @id @default(cuid())
+  type      String   // LIKE, LOVE, HAHA, WOW, SAD, ANGRY
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  commentId String
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, commentId])
 }
 
 model Like {

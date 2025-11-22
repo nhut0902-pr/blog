@@ -3,6 +3,8 @@
 import { useState } from 'react';
 import { User, Reply, MessageCircle } from 'lucide-react';
 
+import ReactionButton from './ReactionButton';
+
 interface Comment {
     id: string;
     content: string;
@@ -13,15 +15,17 @@ interface Comment {
         avatarUrl?: string;
     };
     replies?: Comment[];
+    reactions: { type: string; userId: string }[];
 }
 
 interface CommentThreadProps {
     comment: Comment;
     onReply: (parentId: string, content: string) => void;
     depth?: number;
+    currentUserId?: string;
 }
 
-export default function CommentThread({ comment, onReply, depth = 0 }: CommentThreadProps) {
+export default function CommentThread({ comment, onReply, depth = 0, currentUserId }: CommentThreadProps) {
     const [showReplyForm, setShowReplyForm] = useState(false);
     const [replyContent, setReplyContent] = useState('');
     const [submitting, setSubmitting] = useState(false);
@@ -72,15 +76,23 @@ export default function CommentThread({ comment, onReply, depth = 0 }: CommentTh
                             {comment.content}
                         </p>
 
-                        {canReply && (
-                            <button
-                                onClick={() => setShowReplyForm(!showReplyForm)}
-                                className="flex items-center text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
-                            >
-                                <Reply size={14} className="mr-1" />
-                                Trả lời
-                            </button>
-                        )}
+                        <div className="flex items-center space-x-4 mt-2">
+                            <ReactionButton
+                                commentId={comment.id}
+                                initialReactions={comment.reactions || []}
+                                currentUserId={currentUserId}
+                            />
+
+                            {canReply && (
+                                <button
+                                    onClick={() => setShowReplyForm(!showReplyForm)}
+                                    className="flex items-center text-sm text-indigo-600 dark:text-indigo-400 hover:text-indigo-700 dark:hover:text-indigo-300 transition-colors"
+                                >
+                                    <Reply size={14} className="mr-1" />
+                                    Trả lời
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
 
@@ -126,6 +138,7 @@ export default function CommentThread({ comment, onReply, depth = 0 }: CommentTh
                             comment={reply}
                             onReply={onReply}
                             depth={depth + 1}
+                            currentUserId={currentUserId}
                         />
                     ))}
                 </div>

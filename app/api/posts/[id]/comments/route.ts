@@ -14,11 +14,23 @@ export async function GET(
         const allComments = await prisma.comment.findMany({
             where: { postId: id },
             include: {
-                user: {
-                    select: { name: true, email: true, avatarUrl: true },
+                author: {
+                    select: {
+                        name: true,
+                        email: true,
+                        avatarUrl: true,
+                    },
+                },
+                reactions: {
+                    select: {
+                        type: true,
+                        userId: true,
+                    },
                 },
             },
-            orderBy: { createdAt: 'asc' },
+            orderBy: {
+                createdAt: 'desc',
+            },
         });
 
         // Build nested structure
