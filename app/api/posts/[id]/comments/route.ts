@@ -80,6 +80,8 @@ export async function POST(
             return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
         }
 
+        const userId = payload.userId as string;
+
         const { content, parentId } = await request.json();
 
         if (!content) {
@@ -90,15 +92,94 @@ export async function POST(
             data: {
                 content,
                 postId: id,
-                userId: payload.sub as string,
+                userId,
                 parentId: parentId || null,
             },
             include: {
-                user: {
-                    select: { name: true, email: true, avatarUrl: true },
+                author: {
+                    select: {
+                        name: true,
+                        email: true,
+                        avatarUrl: true,
+                    },
+                },
+                reactions: {
+                    select: {
+                        type: true,
+                        userId: true,
+                    },
                 },
             },
         });
+
+        // Parse mentions and create notifications
+        const mentionRegex = /@(\w+)/g;
+        const mentions = content.match(mentionRegex);
+
+        if (mentions) {
+            const mentionedNames = mentions.map((m: string) => m.substring(1));
+            const mentionedUsers = await prisma.user.findMany({
+                where: {
+                    name: { in: mentionedNames, mode: 'insensitive' },
+                },
+            });
+
+            for (const mentionedUser of mentionedUsers) {
+                if (mentionedUser.id !== userId) {
+                    await prisma.notification.create({
+                        data: {
+                            type: 'MENTION',
+                            message: `${payload.name || 'Someone'} mentioned you in a comment: "${content.substring(0, 20)}..."`,
+                            userId: mentionedUser.id,
+                            senderId: userId,
+                            postId: id,
+                        },
+                    });
+                }
+            }
+        }
+
+        // Notify post author if not self and not already notified by mention
+        const post = await prisma.post.findUnique({ where: { id } });
+        if (post && post.authorId !== userId) {
+            // Check if post author was already mentioned to avoid double notification
+            const postAuthor = await prisma.user.findUnique({ where: { id: post.authorId } });
+            const isMentioned = mentions && postAuthor && mentions.some((m: string) => m.substring(1).toLowerCase() === postAuthor.name.toLowerCase());
+
+            if (!isMentioned) {
+                await prisma.notification.create({
+                    data: {
+                        type: 'COMMENT',
+                        message: `${payload.name || 'Someone'} commented on your post "${post.title}"`,
+                        userId: post.authorId,
+                        senderId: userId,
+                        postId: id,
+                    },
+                });
+            }
+        }
+
+        // Notify parent comment author if reply
+        if (parentId) {
+            const parentComment = await prisma.comment.findUnique({ where: { id: parentId } });
+            if (parentComment && parentComment.userId !== userId && parentComment.userId !== post?.authorId) {
+                // Check if parent author was already mentioned
+                const parentAuthor = await prisma.user.findUnique({ where: { id: parentComment.userId } });
+                const isMentioned = mentions && parentAuthor && mentions.some((m: string) => m.substring(1).toLowerCase() === parentAuthor.name.toLowerCase());
+
+                if (!isMentioned) {
+                    await prisma.notification.create({
+                        data: {
+                            type: 'REPLY',
+                            message: `${payload.name || 'Someone'} replied to your comment`,
+                            userId: parentComment.userId,
+                            senderId: userId,
+                            postId: id,
+                        },
+                    });
+                }
+            }
+        }
 
         return NextResponse.json(comment);
     } catch (error) {

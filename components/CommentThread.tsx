@@ -2,8 +2,8 @@
 
 import { useState } from 'react';
 import { User, Reply, MessageCircle, Edit2, Trash2, X, Check } from 'lucide-react';
-
 import ReactionButton from './ReactionButton';
+import MentionTextarea from './MentionTextarea';
 
 interface Comment {
     id: string;
@@ -158,9 +158,9 @@ export default function CommentThread({ comment, onReply, depth = 0, currentUser
 
                         {isEditing ? (
                             <div className="mt-2">
-                                <textarea
+                                <MentionTextarea
                                     value={editContent}
-                                    onChange={(e) => setEditContent(e.target.value)}
+                                    onChange={setEditContent}
                                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 dark:bg-gray-700 dark:text-white resize-none"
                                     rows={2}
                                 />
@@ -208,13 +208,12 @@ export default function CommentThread({ comment, onReply, depth = 0, currentUser
 
                 {showReplyForm && (
                     <form onSubmit={handleReplySubmit} className="mt-4 ml-13">
-                        <textarea
+                        <MentionTextarea
                             value={replyContent}
-                            onChange={(e) => setReplyContent(e.target.value)}
-                            placeholder="Viết câu trả lời..."
+                            onChange={setReplyContent}
+                            placeholder="Viết câu trả lời... (gõ @ để nhắc đến ai đó)"
                             className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 dark:bg-gray-700 dark:text-white resize-none"
                             rows={3}
-                            disabled={submitting}
                         />
                         <div className="flex space-x-2 mt-2">
                             <button
