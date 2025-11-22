@@ -133,14 +133,22 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
 
             <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:bg-gray-900">
                 <header className="mb-12 text-center">
-                    <div className="flex items-center justify-center space-x-4 text-sm text-gray-500 mb-6">
-                        <span className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
+                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 mb-6">
+                        <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
                             <Calendar size={14} className="mr-2" />
                             {new Date(post.createdAt).toLocaleDateString()}
                         </span>
-                        <span className="flex items-center bg-gray-100 px-3 py-1 rounded-full">
+                        <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
                             <UserIcon size={14} className="mr-2" />
                             {post.author.name || 'Anonymous'}
+                        </span>
+                        <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
+                            <Eye size={14} className="mr-2" />
+                            {post.views} views
+                        </span>
+                        <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
+                            <Clock size={14} className="mr-2" />
+                            {readingTime}
                         </span>
                     </div>
                     <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">

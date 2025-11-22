@@ -12,23 +12,24 @@ export async function GET(
 ) {
     try {
         const { id } = await params;
-        const post = await prisma.post.findUnique({
-            where: { id },
-            include: {
-                author: {
-                    select: { name: true, email: true },
-                },
-                _count: {
-                    select: { comments: true, likes: true },
-                },
-            },
-        });
 
-        if (!post) {
+        try {
+            const post = await prisma.post.update({
+                where: { id },
+                data: { views: { increment: 1 } },
+                include: {
+                    author: {
+                        select: { name: true, email: true },
+                    },
+                    _count: {
+                        select: { comments: true, likes: true },
+                    },
+                },
+            });
+            return NextResponse.json(post);
+        } catch (error) {
             return NextResponse.json({ error: 'Post not found' }, { status: 404 });
         }
-
-        return NextResponse.json(post);
     } catch (error) {
         return NextResponse.json({ error: 'Error fetching post' }, { status: 500 });
     }

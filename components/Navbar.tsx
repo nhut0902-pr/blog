@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { PenSquare, LogOut, User } from 'lucide-react';
+import { PenSquare, LogOut, User, BarChart } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import NotificationsDropdown from './NotificationsDropdown';
@@ -69,6 +69,13 @@ export default function Navbar() {
                                             className="flex items-center px-3 py-2 text-sm font-medium text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 transition-colors"
                                         >
                                             Users
+                                        </Link>
+                                        <Link
+                                            href="/admin/analytics"
+                                            className="flex items-center px-3 py-2 text-sm font-medium text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 transition-colors"
+                                        >
+                                            <BarChart size={18} className="mr-1" />
+                                            Analytics
                                         </Link>
                                     </>
                                 )}
