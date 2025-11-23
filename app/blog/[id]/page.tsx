@@ -134,8 +134,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
             />
 
             <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12 dark:bg-gray-900">
-                <header className="mb-12 text-center">
-                    <div className="flex flex-wrap items-center justify-center gap-4 text-sm text-gray-500 mb-6">
+                <header className="mb-8 sm:mb-12 text-center">
+                    <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-4 text-xs sm:text-sm text-gray-500 mb-4 sm:mb-6">
                         <span className="flex items-center bg-gray-100 dark:bg-gray-800 px-3 py-1 rounded-full">
                             <Calendar size={14} className="mr-2" />
                             {new Date(post.createdAt).toLocaleDateString()}
@@ -153,11 +153,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
                             {readingTime}
                         </span>
                     </div>
-                    <h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 leading-tight">
+                    <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 sm:mb-6 leading-tight px-4">
                         {post.title}
                     </h1>
 
-                    <div className="flex justify-center mb-6">
+                    <div className="flex justify-center mb-4 sm:mb-6">
                         <ShareButtons
                             url={`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/blog/${post.id}`}
                             title={post.title}
@@ -165,7 +165,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
                         />
                     </div>
 
-                    <div className="flex justify-center space-x-4">
+                    <div className="flex justify-center space-x-3 sm:space-x-4">
                         <LikeButton
                             postId={post.id}
                             initialLikes={post._count.likes}
@@ -175,7 +175,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
                     </div>
                 </header>
 
-                <div className="prose prose-lg prose-indigo mx-auto text-gray-700">
+                <div className="prose prose-base sm:prose-lg prose-indigo mx-auto text-gray-700 dark:text-gray-300 px-2 sm:px-0">
                     {post.content.split('\n').map((paragraph: string, idx: number) => (
                         <p key={idx} className="mb-4 leading-relaxed">
                             {paragraph}
@@ -183,7 +183,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
                     ))}
                 </div>
 
-                <hr className="my-12 border-gray-200" />
+                <hr className="my-8 sm:my-12 border-gray-200 dark:border-gray-700" />
 
                 <CommentSection postId={post.id} />
             </article>

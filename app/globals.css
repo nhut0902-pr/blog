@@ -99,7 +99,84 @@ body {
 }
 
 .loader #shapes g g circle:nth-child(2) {
-  animation-delay: calc((var(--time-animation) * 2) / -3);
+  animation-delay: calc(var(--time-animation) / 2);
+  fill: var(--arrows-color);
+}
+
+/* Mobile-specific utilities */
+@layer utilities {
+
+  /* Touch-friendly tap targets (minimum 44x44px) */
+  .tap-target {
+    @apply min-w-[44px] min-h-[44px];
+  }
+
+  /* Mobile-optimized text sizes */
+  .text-mobile-base {
+    @apply text-base sm:text-sm;
+  }
+
+  .text-mobile-lg {
+    @apply text-lg sm:text-base;
+  }
+
+  .text-mobile-xl {
+    @apply text-xl sm:text-lg;
+  }
+
+  /* Mobile-optimized spacing */
+  .p-mobile {
+    @apply p-4 sm:p-6 lg:p-8;
+  }
+
+  .px-mobile {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .py-mobile {
+    @apply py-4 sm:py-6 lg:py-8;
+  }
+
+  /* Mobile-optimized containers */
+  .container-mobile {
+    @apply w-full px-4 sm:px-6 lg:px-8 mx-auto;
+  }
+
+  /* Prevent text selection on touch targets */
+  .no-select {
+    -webkit-user-select: none;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+/* Ensure minimum touch target sizes */
+@media (max-width: 640px) {
+
+  button,
+  a.button,
+  input[type="submit"],
+  input[type="button"] {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Improve form inputs on mobile */
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea,
+  select {
+    font-size: 16px;
+    /* Prevents zoom on iOS */
+  }
+}
+
+/* Improve click/tap feedback */
+button:active,
+a:active {
+  transform: scale(0.98);
+  transition: transform 0.1s;
 }
 
 .loader #shapes g g circle:nth-child(3) {

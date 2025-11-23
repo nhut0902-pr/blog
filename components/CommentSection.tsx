@@ -94,27 +94,27 @@ export default function CommentSection({ postId }: CommentSectionProps) {
     };
 
     return (
-        <div className="mt-12">
-            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-8 flex items-center">
+        <div className="mt-8 sm:mt-12">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-6 sm:mb-8 flex items-center">
                 <MessageCircle className="mr-2" />
                 Bình luận ({comments.length})
             </h3>
 
             {user ? (
-                <div className="mb-10">
-                    <div className="flex items-start space-x-4">
+                <div className="mb-8 sm:mb-10">
+                    <div className="flex items-start space-x-2 sm:space-x-4">
                         <div className="flex-grow">
                             <MentionTextarea
                                 value={newComment}
                                 onChange={setNewComment}
                                 placeholder="Chia sẻ suy nghĩ của bạn... (gõ @ để nhắc đến ai đó)"
-                                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all resize-none min-h-[100px]"
+                                className="w-full px-3 sm:px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-white focus:border-indigo-500 focus:ring-2 focus:ring-indigo-200 transition-all resize-none min-h-[100px] text-base"
                             />
                         </div>
                         <button
                             onClick={(e) => handleSubmit(e as any)}
                             disabled={loading || !newComment.trim()}
-                            className="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="px-4 sm:px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed min-h-[44px] text-sm sm:text-base"
                         >
                             <Send size={18} className="mr-2" />
                             Gửi
@@ -126,7 +126,7 @@ export default function CommentSection({ postId }: CommentSectionProps) {
                     <p className="text-gray-600 dark:text-gray-400 mb-4">Đăng nhập để tham gia thảo luận.</p>
                     <button
                         onClick={() => router.push('/login')}
-                        className="px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors font-medium"
+                        className="px-4 sm:px-6 py-2 bg-indigo-600 text-white rounded-full hover:bg-indigo-700 transition-colors font-medium min-h-[44px]"
                     >
                         Đăng nhập
                     </button>
