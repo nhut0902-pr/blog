@@ -1,11 +1,11 @@
 import { NextResponse } from 'next/server';
-import { v2 as cloudinary } from 'cloudinary';
+import ImageKit from 'imagekit';
 
-// Configure Cloudinary
-cloudinary.config({
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
+// Initialize ImageKit
+const imagekit = new ImageKit({
+    publicKey: process.env.IMAGEKIT_PUBLIC_KEY || '',
+    privateKey: process.env.IMAGEKIT_PRIVATE_KEY || '',
+    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || '',
 });
 
 export async function POST(request: Request) {
@@ -33,31 +33,27 @@ export async function POST(request: Request) {
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Upload to Cloudinary
-        const result = await new Promise((resolve, reject) => {
-            const uploadStream = cloudinary.uploader.upload_stream(
-                {
-                    folder: 'blog-uploads',
-                    transformation: [
-                        { width: 1200, crop: 'limit' },
-                        { quality: 'auto' },
-                        { fetch_format: 'auto' },
-                    ],
-                },
-                (error, result) => {
-                    if (error) reject(error);
-                    else resolve(result);
-                }
-            );
-
-            uploadStream.end(buffer);
+        // Upload to ImageKit
+        const result = await imagekit.upload({
+            file: buffer.toString('base64'),
+            fileName: file.name,
+            folder: '/blog-uploads',
+            transformation: {
+                pre: 'l-image,i-logo.png,w-100,b-10_CDDC39,l-end', // Optional watermark
+                post: [
+                    {
+                        type: 'transformation',
+                        value: 'w-1200,h-1200,c-at_max', // Resize to max 1200px
+                    },
+                ],
+            },
+            useUniqueFileName: true,
         });
 
-        const uploadResult = result as any;
-
         return NextResponse.json({
-            url: uploadResult.secure_url,
-            publicId: uploadResult.public_id,
+            url: result.url,
+            fileId: result.fileId,
+            thumbnailUrl: result.thumbnailUrl,
         });
     } catch (error) {
         console.error('Upload error:', error);
