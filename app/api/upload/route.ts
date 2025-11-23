@@ -38,15 +38,6 @@ export async function POST(request: Request) {
             file: buffer.toString('base64'),
             fileName: file.name,
             folder: '/blog-uploads',
-            transformation: {
-                pre: 'l-image,i-logo.png,w-100,b-10_CDDC39,l-end', // Optional watermark
-                post: [
-                    {
-                        type: 'transformation',
-                        value: 'w-1200,h-1200,c-at_max', // Resize to max 1200px
-                    },
-                ],
-            },
             useUniqueFileName: true,
         });
 
