@@ -131,6 +131,13 @@ model Notification {
   @@index([userId, read])
 }
 
+model Subscriber {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  createdAt DateTime @default(now())
+  active    Boolean  @default(true)
+}
+
 enum Role {
   USER
   ADMIN
