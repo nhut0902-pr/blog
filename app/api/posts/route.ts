@@ -85,6 +85,33 @@ export async function POST(request: Request) {
             },
         });
 
+        // Auto-send newsletter if post is published
+        if (published) {
+            try {
+                // Get all active subscribers
+                const subscribers = await prisma.subscriber.findMany({
+                    where: { active: true },
+                    select: { email: true },
+                });
+
+                if (subscribers.length > 0) {
+                    // Send emails in background
+                    const { sendNewPostNotification } = await import('@/lib/email');
+                    const emails = subscribers.map((s) => s.email);
+
+                    // Run async without blocking the response
+                    sendNewPostNotification(post, emails).then((result) => {
+                        console.log(`Newsletter sent: ${result.successful}/${result.total} emails delivered`);
+                    }).catch((error) => {
+                        console.error('Newsletter send error:', error);
+                    });
+                }
+            } catch (error) {
+                console.error('Newsletter error:', error);
+                // Don't fail the post creation if newsletter sending fails
+            }
+        }
+
         revalidatePath('/');
         revalidatePath('/admin');
 

@@ -32,6 +32,10 @@ export async function POST(request: Request) {
             data: { email },
         });
 
+        // Send welcome email
+        const { sendWelcomeEmail } = await import('@/lib/email');
+        await sendWelcomeEmail(email);
+
         return NextResponse.json({ message: 'Đăng ký thành công! Bạn sẽ nhận email khi có bài viết mới.' });
     } catch (error) {
         console.error('Subscribe error:', error);

@@ -139,6 +139,123 @@ export function getNewPostEmailHTML(post: { title: string; content: string; id: 
     `;
 }
 
+// Email template for welcome/confirmation
+export function getWelcomeEmailHTML() {
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const unsubscribeUrl = `${baseUrl}/api/newsletter/unsubscribe`;
+
+    return `
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chào mừng đến với BlogApp</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: #ffffff;
+            border-radius: 8px;
+            padding: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid #4f46e5;
+        }
+        h1 {
+            color: #4f46e5;
+            margin: 0 0 10px 0;
+            font-size: 28px;
+        }
+        .badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        .content {
+            margin: 20px 0;
+            text-align: center;
+        }
+        .icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+        }
+        .message {
+            color: #1f2937;
+            font-size: 18px;
+            line-height: 1.8;
+            margin-bottom: 25px;
+        }
+        .footer {
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid #e5e7eb;
+            text-align: center;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        .unsubscribe {
+            color: #9ca3af;
+            text-decoration: none;
+            font-size: 12px;
+        }
+        .unsubscribe:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="badge">✨ CHÀO MỪNG</div>
+            <h1>BlogApp</h1>
+            <p style="color: #6b7280; margin: 0;">Cảm ơn bạn đã đăng ký!</p>
+        </div>
+        
+        <div class="content">
+            <div class="icon">📬</div>
+            <div class="message">
+                <strong>Đăng ký thành công!</strong><br><br>
+                Bạn sẽ nhận được email thông báo mỗi khi có bài viết mới trên blog của chúng tôi.<br><br>
+                Cảm ơn bạn đã theo dõi BlogApp! 🎉
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Bạn nhận được email này vì đã đăng ký nhận thông báo từ BlogApp.</p>
+            <p>
+                <a href="${unsubscribeUrl}" class="unsubscribe">Hủy đăng ký nhận tin</a>
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+    `;
+}
+
+// Send welcome email
+export async function sendWelcomeEmail(email: string) {
+    const html = getWelcomeEmailHTML();
+    const subject = '✨ Chào mừng đến với BlogApp';
+    return await sendEmail(email, subject, html);
+}
+
 // Send email to single recipient
 export async function sendEmail(to: string, subject: string, html: string) {
     try {
