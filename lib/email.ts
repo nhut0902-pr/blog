@@ -13,7 +13,7 @@ const transporter = nodemailer.createTransport({
 
 // Email template for new post notification
 export function getNewPostEmailHTML(post: { title: string; content: string; id: string }) {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://blog-89b4.vercel.app';
     const postUrl = `${baseUrl}/blog/${post.id}`;
     const unsubscribeUrl = `${baseUrl}/api/newsletter/unsubscribe`;
 
@@ -141,7 +141,7 @@ export function getNewPostEmailHTML(post: { title: string; content: string; id: 
 
 // Email template for welcome/confirmation
 export function getWelcomeEmailHTML() {
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://blog-89b4.vercel.app';
     const unsubscribeUrl = `${baseUrl}/api/newsletter/unsubscribe`;
 
     return `
