@@ -98,10 +98,10 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ id:
     const readingTime = calculateReadingTime(post.content);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-    // JSON-LD Structured Data for SEO
+    // JSON-LD Structured Data for SEO & Google News
     const jsonLd = {
         '@context': 'https://schema.org',
-        '@type': 'BlogPosting',
+        '@type': 'NewsArticle',
         headline: post.title,
         description: post.content.substring(0, 160),
         image: post.imageUrl || `${baseUrl}/og-image.png`,

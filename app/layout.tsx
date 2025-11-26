@@ -14,7 +14,7 @@ export const metadata: Metadata = {
     template: '%s | BlogApp',
   },
   description: 'Nền tảng blog hiện đại với dark mode, tìm kiếm, bookmarks, và nhiều tính năng khác',
-  keywords: ['blog', 'chia sẻ', 'kiến thức', 'viết blog', 'cộng đồng'],
+  keywords: ['blog', 'chia sẻ', 'kiến thức', 'viết blog', 'cộng đồng', 'tin tức', 'news'],
   authors: [{ name: 'BlogApp Team' }],
   creator: 'BlogApp',
   publisher: 'BlogApp',
