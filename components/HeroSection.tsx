@@ -54,16 +54,16 @@ export default function HeroSection() {
                 <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-600/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
             </div>
 
-            <div className="relative p-8 lg:p-12">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div className="relative p-6 lg:p-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center">
                     {/* Left: Text Content */}
-                    <div className="flex flex-col justify-center space-y-6">
+                    <div className="flex flex-col justify-center space-y-6 order-2 lg:order-1">
                         <div className="inline-flex items-center space-x-2">
                             <span className="relative flex h-3 w-3">
                                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                                 <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
                             </span>
-                            <span className="text-sm font-mono text-cyan-400 tracking-wider uppercase">Featured_Post.exe</span>
+                            <span className="text-xs lg:text-sm font-mono text-cyan-400 tracking-wider uppercase">Featured_Post.exe</span>
                         </div>
 
                         {loading ? (
@@ -73,18 +73,18 @@ export default function HeroSection() {
                             </div>
                         ) : featuredPost ? (
                             <>
-                                <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-white font-mono tracking-tight">
+                                <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-white font-mono tracking-tight">
                                     <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
                                         {featuredPost.title}
                                     </span>
                                 </h1>
-                                <p className="text-lg text-slate-400 line-clamp-3 font-light border-l-2 border-slate-700 pl-4">
+                                <p className="text-base lg:text-lg text-slate-400 line-clamp-3 font-light border-l-2 border-slate-700 pl-4">
                                     {featuredPost.content ? featuredPost.content.substring(0, 200) : ''}...
                                 </p>
-                                <div className="flex items-center space-x-4 pt-4">
+                                <div className="flex flex-col sm:flex-row sm:items-center gap-4 pt-4">
                                     <Link
                                         href={`/blog/${featuredPost.id}`}
-                                        className="group/btn relative inline-flex items-center px-8 py-3 bg-slate-900 text-cyan-400 font-mono text-sm border border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all duration-300 overflow-hidden"
+                                        className="group/btn relative inline-flex items-center justify-center px-8 py-3 bg-slate-900 text-cyan-400 font-mono text-sm border border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all duration-300 overflow-hidden w-full sm:w-auto"
                                     >
                                         <span className="absolute inset-0 bg-cyan-950/50 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
                                         <span className="relative flex items-center">
@@ -92,7 +92,7 @@ export default function HeroSection() {
                                             <TrendingUp size={16} className="ml-2" />
                                         </span>
                                     </Link>
-                                    <div className="text-xs font-mono text-slate-500 flex items-center space-x-4">
+                                    <div className="text-xs font-mono text-slate-500 flex items-center space-x-4 justify-center sm:justify-start">
                                         <span>// {featuredPost.author?.name || 'SYSTEM'}</span>
                                         <span>:: {new Date(featuredPost.createdAt).toLocaleDateString('vi-VN')}</span>
                                     </div>
@@ -100,10 +100,10 @@ export default function HeroSection() {
                             </>
                         ) : (
                             <div>
-                                <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-white font-mono mb-4">
+                                <h1 className="text-3xl lg:text-5xl font-bold leading-tight text-white font-mono mb-4">
                                     HELLO_WORLD
                                 </h1>
-                                <p className="text-lg text-slate-400 font-mono">
+                                <p className="text-base lg:text-lg text-slate-400 font-mono">
                                     &gt; Initializing tech blog sequence...<br />
                                     &gt; Loading knowledge base...
                                 </p>
@@ -112,20 +112,20 @@ export default function HeroSection() {
                     </div>
 
                     {/* Right: Featured Image or Search */}
-                    <div className="relative">
+                    <div className="relative order-1 lg:order-2">
                         {/* Decorative corners */}
-                        <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-cyan-500/50" />
-                        <div className="absolute -top-2 -right-2 w-8 h-8 border-t-2 border-r-2 border-cyan-500/50" />
-                        <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b-2 border-l-2 border-cyan-500/50" />
-                        <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-cyan-500/50" />
+                        <div className="absolute -top-2 -left-2 w-6 h-6 lg:w-8 lg:h-8 border-t-2 border-l-2 border-cyan-500/50" />
+                        <div className="absolute -top-2 -right-2 w-6 h-6 lg:w-8 lg:h-8 border-t-2 border-r-2 border-cyan-500/50" />
+                        <div className="absolute -bottom-2 -left-2 w-6 h-6 lg:w-8 lg:h-8 border-b-2 border-l-2 border-cyan-500/50" />
+                        <div className="absolute -bottom-2 -right-2 w-6 h-6 lg:w-8 lg:h-8 border-b-2 border-r-2 border-cyan-500/50" />
 
                         {featuredPost?.imageUrl ? (
-                            <div className="relative group overflow-hidden bg-slate-900 border border-slate-800">
+                            <div className="relative group overflow-hidden bg-slate-900 border border-slate-800 aspect-video lg:aspect-auto lg:h-96">
                                 <div className="absolute inset-0 bg-cyan-500/10 mix-blend-overlay z-10" />
                                 <img
                                     src={featuredPost.imageUrl}
                                     alt={featuredPost.title}
-                                    className="w-full h-80 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0"
+                                    className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0"
                                 />
                                 {featuredPost.category && (
                                     <div className="absolute top-0 right-0 bg-cyan-500 text-slate-900 text-xs font-bold px-3 py-1 font-mono uppercase z-20">
