@@ -5,6 +5,7 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import DeletePostButton from '@/components/DeletePostButton';
+import SeasonalEffectToggle from '@/components/admin/SeasonalEffectToggle';
 
 export const dynamic = 'force-dynamic';
 
@@ -47,6 +48,11 @@ export default async function AdminDashboard() {
                     <Plus size={20} className="mr-2" />
                     Create New Post
                 </Link>
+            </div>
+
+            {/* Seasonal Effect Toggle */}
+            <div className="mb-8">
+                <SeasonalEffectToggle />
             </div>
 
             <div className="bg-white shadow-sm rounded-xl border border-gray-200 overflow-hidden">

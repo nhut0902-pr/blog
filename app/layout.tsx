@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PrivacyBanner from "@/components/PrivacyBanner";
+import SeasonalEffect from "@/components/effects/SeasonalEffect";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -68,6 +69,7 @@ export default function RootLayout({
             <Footer />
           </AuthProvider>
         </ThemeProvider>
+        <SeasonalEffect />
       </body>
     </html >
   );
