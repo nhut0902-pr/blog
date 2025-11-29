@@ -93,6 +93,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                             <BarChart size={18} className="mr-3" />
                                             SYSTEM_ANALYTICS
                                         </Link>
+                                        <Link href="/admin/comments" onClick={onClose} className="flex items-center p-3 text-yellow-400 hover:bg-yellow-950/20 border border-transparent hover:border-yellow-500/30 rounded transition-all font-mono text-sm">
+                                            <Terminal size={18} className="mr-3" />
+                                            COMMENT_CONTROL
+                                        </Link>
                                     </div>
                                 )}
 
