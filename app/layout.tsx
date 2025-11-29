@@ -44,8 +44,7 @@ export const metadata: Metadata = {
     },
   },
   verification: {
-    // Add your verification codes here when ready
-    // google: 'your-google-verification-code',
+    google: 'google003c285f4d4d03ea',
     // yandex: 'your-yandex-verification-code',
   },
 };
