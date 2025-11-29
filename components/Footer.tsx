@@ -91,8 +91,18 @@ export default function Footer() {
                 </div>
 
                 {/* Copyright */}
-                <div className="text-center text-xs text-gray-500 dark:text-gray-500 mt-6">
-                    © {new Date().getFullYear()} BlogApp. All rights reserved.
+                <div className="flex flex-col sm:flex-row justify-between items-center text-xs text-gray-500 dark:text-gray-500 mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <div className="mb-2 sm:mb-0">
+                        © {new Date().getFullYear()} BlogApp. All rights reserved.
+                    </div>
+                    <div className="flex space-x-4">
+                        <Link href="/terms" className="hover:text-gray-900 dark:hover:text-gray-300 transition-colors">
+                            Điều khoản dịch vụ
+                        </Link>
+                        <Link href="/privacy" className="hover:text-gray-900 dark:hover:text-gray-300 transition-colors">
+                            Chính sách quyền riêng tư
+                        </Link>
+                    </div>
                 </div>
             </div>
         </footer>
