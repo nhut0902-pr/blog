@@ -30,7 +30,6 @@ export default function PetalFallEffect() {
             rotation: number;
             rotationSpeed: number;
             emoji: string;
-            emoji: string;
 
             constructor() {
                 this.x = Math.random() * canvas!.width;
@@ -40,15 +39,6 @@ export default function PetalFallEffect() {
                 this.drift = Math.random() * 0.5 - 0.25; // Gentle drift
                 this.rotation = Math.random() * 360;
                 this.rotationSpeed = Math.random() * 2 - 1;
-
-                // Random colors for apricot blossoms (yellow/golden)
-                const colors = [
-                    'rgba(255, 215, 0, 0.8)',    // Golden
-                    'rgba(255, 193, 7, 0.8)',    // Amber
-                    'rgba(255, 179, 0, 0.8)',    // Gold
-                    'rgba(255, 235, 59, 0.7)',   // Yellow
-                ];
-                this.color = colors[Math.floor(Math.random() * colors.length)];
 
                 // Random flower emojis for spring
                 const flowers = ['🌸', '🌺', '🌼', '🏵️'];
