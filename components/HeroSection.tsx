@@ -38,87 +38,115 @@ export default function HeroSection() {
     }, []);
 
     return (
-        <div className="relative mb-12">
-            {/* Gradient Background với Glassmorphism */}
-            <div className="absolute inset-0 bg-gradient-to-br from-indigo-500/20 via-purple-500/20 to-pink-500/20 dark:from-indigo-900/30 dark:via-purple-900/30 dark:to-pink-900/30 rounded-3xl blur-3xl -z-10" />
+        <div className="relative mb-12 group">
+            {/* Tech Background Effect */}
+            <div className="absolute inset-0 bg-slate-950 rounded-xl overflow-hidden -z-10 border border-slate-800">
+                {/* Grid Pattern */}
+                <div className="absolute inset-0 opacity-[0.15]"
+                    style={{
+                        backgroundImage: 'linear-gradient(#4f46e5 1px, transparent 1px), linear-gradient(90deg, #4f46e5 1px, transparent 1px)',
+                        backgroundSize: '32px 32px'
+                    }}
+                />
 
-            <div className="relative bg-white/80 dark:bg-gray-800/80 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 p-8 lg:p-12">
+                {/* Glowing Orbs */}
+                <div className="absolute top-0 left-0 w-96 h-96 bg-indigo-600/20 rounded-full blur-[100px] -translate-x-1/2 -translate-y-1/2" />
+                <div className="absolute bottom-0 right-0 w-96 h-96 bg-cyan-600/20 rounded-full blur-[100px] translate-x-1/2 translate-y-1/2" />
+            </div>
+
+            <div className="relative p-8 lg:p-12">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
                     {/* Left: Text Content */}
                     <div className="flex flex-col justify-center space-y-6">
-                        <div className="inline-flex items-center space-x-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-                            <Sparkles size={18} className="animate-pulse" />
-                            <span>✨ Bài viết nổi bật</span>
+                        <div className="inline-flex items-center space-x-2">
+                            <span className="relative flex h-3 w-3">
+                                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                                <span className="relative inline-flex rounded-full h-3 w-3 bg-cyan-500"></span>
+                            </span>
+                            <span className="text-sm font-mono text-cyan-400 tracking-wider uppercase">Featured_Post.exe</span>
                         </div>
 
                         {loading ? (
                             <div className="space-y-4">
-                                <div className="h-12 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
-                                <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse" />
+                                <div className="h-12 bg-slate-800 rounded animate-pulse w-3/4" />
+                                <div className="h-24 bg-slate-800 rounded animate-pulse" />
                             </div>
                         ) : featuredPost ? (
                             <>
-                                <h1 className="text-4xl lg:text-5xl font-black leading-tight text-gray-900 dark:text-white">
-                                    {featuredPost.title}
+                                <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-white font-mono tracking-tight">
+                                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-indigo-400">
+                                        {featuredPost.title}
+                                    </span>
                                 </h1>
-                                <p className="text-lg text-gray-600 dark:text-gray-300 line-clamp-3">
+                                <p className="text-lg text-slate-400 line-clamp-3 font-light border-l-2 border-slate-700 pl-4">
                                     {featuredPost.content ? featuredPost.content.substring(0, 200) : ''}...
                                 </p>
                                 <div className="flex items-center space-x-4 pt-4">
                                     <Link
                                         href={`/blog/${featuredPost.id}`}
-                                        className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
+                                        className="group/btn relative inline-flex items-center px-8 py-3 bg-slate-900 text-cyan-400 font-mono text-sm border border-cyan-500/30 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(34,211,238,0.3)] transition-all duration-300 overflow-hidden"
                                     >
-                                        Đọc ngay
-                                        <TrendingUp size={18} className="ml-2" />
+                                        <span className="absolute inset-0 bg-cyan-950/50 translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300" />
+                                        <span className="relative flex items-center">
+                                            READ_MORE
+                                            <TrendingUp size={16} className="ml-2" />
+                                        </span>
                                     </Link>
-                                    <div className="text-sm text-gray-500 dark:text-gray-400">
-                                        <span className="font-medium">{featuredPost.author?.name || 'Unknown'}</span>
-                                        <span className="mx-2">•</span>
-                                        <span>{new Date(featuredPost.createdAt).toLocaleDateString('vi-VN')}</span>
+                                    <div className="text-xs font-mono text-slate-500 flex items-center space-x-4">
+                                        <span>// {featuredPost.author?.name || 'SYSTEM'}</span>
+                                        <span>:: {new Date(featuredPost.createdAt).toLocaleDateString('vi-VN')}</span>
                                     </div>
                                 </div>
                             </>
                         ) : (
                             <div>
-                                <h1 className="text-4xl lg:text-5xl font-black leading-tight text-gray-900 dark:text-white mb-4">
-                                    Chào mừng đến với BlogApp
+                                <h1 className="text-4xl lg:text-5xl font-bold leading-tight text-white font-mono mb-4">
+                                    HELLO_WORLD
                                 </h1>
-                                <p className="text-lg text-gray-600 dark:text-gray-300">
-                                    Khám phá những bài viết thú vị và chia sẻ kiến thức cùng cộng đồng
+                                <p className="text-lg text-slate-400 font-mono">
+                                    &gt; Initializing tech blog sequence...<br />
+                                    &gt; Loading knowledge base...
                                 </p>
                             </div>
                         )}
                     </div>
 
-                    {/* Right: Featured Image hoặc Search */}
-                    <div className="flex flex-col justify-center space-y-6">
+                    {/* Right: Featured Image or Search */}
+                    <div className="relative">
+                        {/* Decorative corners */}
+                        <div className="absolute -top-2 -left-2 w-8 h-8 border-t-2 border-l-2 border-cyan-500/50" />
+                        <div className="absolute -top-2 -right-2 w-8 h-8 border-t-2 border-r-2 border-cyan-500/50" />
+                        <div className="absolute -bottom-2 -left-2 w-8 h-8 border-b-2 border-l-2 border-cyan-500/50" />
+                        <div className="absolute -bottom-2 -right-2 w-8 h-8 border-b-2 border-r-2 border-cyan-500/50" />
+
                         {featuredPost?.imageUrl ? (
-                            <div className="relative group">
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-2xl" />
+                            <div className="relative group overflow-hidden bg-slate-900 border border-slate-800">
+                                <div className="absolute inset-0 bg-cyan-500/10 mix-blend-overlay z-10" />
                                 <img
                                     src={featuredPost.imageUrl}
                                     alt={featuredPost.title}
-                                    className="w-full h-80 object-cover rounded-2xl shadow-xl group-hover:scale-105 transition-transform duration-500"
+                                    className="w-full h-80 object-cover opacity-80 group-hover:opacity-100 group-hover:scale-105 transition-all duration-500 grayscale group-hover:grayscale-0"
                                 />
                                 {featuredPost.category && (
-                                    <div className="absolute top-4 left-4 px-4 py-2 bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-full text-sm font-semibold text-indigo-600 dark:text-indigo-400">
+                                    <div className="absolute top-0 right-0 bg-cyan-500 text-slate-900 text-xs font-bold px-3 py-1 font-mono uppercase z-20">
                                         {featuredPost.category}
                                     </div>
                                 )}
+                                {/* Scanline effect */}
+                                <div className="absolute inset-0 bg-[linear-gradient(transparent_50%,rgba(0,0,0,0.5)_50%)] bg-[length:100%_4px] pointer-events-none z-10 opacity-20" />
                             </div>
                         ) : (
-                            <div className="flex flex-col justify-center h-full space-y-4">
-                                <h3 className="text-xl font-bold text-gray-900 dark:text-white">
-                                    Tìm kiếm bài viết
+                            <div className="bg-slate-900/50 border border-slate-700 p-6 backdrop-blur-sm">
+                                <h3 className="text-xl font-bold text-white font-mono mb-4 flex items-center">
+                                    <span className="text-cyan-400 mr-2">&gt;</span> SEARCH_QUERY
                                 </h3>
                                 <SearchBar />
                                 <div className="flex flex-wrap gap-2 mt-4">
-                                    <span className="text-sm text-gray-500 dark:text-gray-400">Trending:</span>
-                                    {['React', 'Next.js', 'TypeScript', 'Design'].map((tag) => (
+                                    <span className="text-xs font-mono text-slate-500 uppercase">Tags:</span>
+                                    {['React', 'Next.js', 'TypeScript', 'AI'].map((tag) => (
                                         <button
                                             key={tag}
-                                            className="px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full text-sm hover:bg-indigo-100 dark:hover:bg-indigo-900 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors"
+                                            className="px-2 py-1 bg-slate-800 text-cyan-400 border border-cyan-900/50 text-xs font-mono hover:bg-cyan-950 hover:border-cyan-500/50 transition-all"
                                         >
                                             #{tag}
                                         </button>
