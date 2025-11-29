@@ -8,28 +8,11 @@ export default function PWAInstallPrompt() {
     const [showPrompt, setShowPrompt] = useState(false);
 
     useEffect(() => {
-        // Check if already dismissed
-        const dismissed = localStorage.getItem('pwa-install-dismissed');
-        if (dismissed) {
-            const dismissedDate = new Date(dismissed);
-            const now = new Date();
-            const daysSince = (now.getTime() - dismissedDate.getTime()) / (1000 * 60 * 60 * 24);
-
-            // Don't show if dismissed within last 7 days
-            if (daysSince < 7) {
-                return;
-            }
-        }
-
         // Listen for beforeinstallprompt event
         const handler = (e: Event) => {
             e.preventDefault();
             setDeferredPrompt(e);
-
-            // Show prompt after 3 seconds
-            setTimeout(() => {
-                setShowPrompt(true);
-            }, 3000);
+            setShowPrompt(true); // Show immediately
         };
 
         window.addEventListener('beforeinstallprompt', handler);
@@ -59,7 +42,7 @@ export default function PWAInstallPrompt() {
 
     const handleDismiss = () => {
         setShowPrompt(false);
-        localStorage.setItem('pwa-install-dismissed', new Date().toISOString());
+        // Removed localStorage saving to allow showing again next time
     };
 
     if (!showPrompt || !deferredPrompt) return null;
