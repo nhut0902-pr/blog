@@ -5,6 +5,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/context/ThemeContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import PrivacyBanner from "@/components/PrivacyBanner";
 
 const inter = Inter({ subsets: ["latin"] });
 
