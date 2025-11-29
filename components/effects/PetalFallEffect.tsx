@@ -29,12 +29,13 @@ export default function PetalFallEffect() {
             drift: number;
             rotation: number;
             rotationSpeed: number;
-            color: string;
+            emoji: string;
+            emoji: string;
 
             constructor() {
                 this.x = Math.random() * canvas!.width;
                 this.y = Math.random() * canvas!.height - canvas!.height;
-                this.size = Math.random() * 6 + 4; // Small petals
+                this.size = Math.random() * 4 + 3; // Smaller size for emoji
                 this.speed = Math.random() * 0.5 + 0.3; // Slow fall
                 this.drift = Math.random() * 0.5 - 0.25; // Gentle drift
                 this.rotation = Math.random() * 360;
@@ -48,6 +49,10 @@ export default function PetalFallEffect() {
                     'rgba(255, 235, 59, 0.7)',   // Yellow
                 ];
                 this.color = colors[Math.floor(Math.random() * colors.length)];
+
+                // Random flower emojis for spring
+                const flowers = ['🌸', '🌺', '🌼', '🏵️'];
+                this.emoji = flowers[Math.floor(Math.random() * flowers.length)];
             }
 
             update() {
@@ -73,14 +78,8 @@ export default function PetalFallEffect() {
                 ctx.save();
                 ctx.translate(this.x, this.y);
                 ctx.rotate((this.rotation * Math.PI) / 180);
-
-                // Draw petal shape (ellipse)
-                ctx.beginPath();
-                ctx.ellipse(0, 0, this.size, this.size * 1.5, 0, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.fill();
-                ctx.closePath();
-
+                ctx.font = `${this.size * 5}px Arial`;
+                ctx.fillText(this.emoji, 0, 0);
                 ctx.restore();
             }
         }
