@@ -109,8 +109,7 @@ export default function HeroSection() {
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                                     Tìm kiếm bài viết
                                 </h3>
-                                <SearchBar
-                                />
+                                <SearchBar />
                                 <div className="flex flex-wrap gap-2 mt-4">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">Trending:</span>
                                     {['React', 'Next.js', 'TypeScript', 'Design'].map((tag) => (
