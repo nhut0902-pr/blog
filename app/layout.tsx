@@ -9,6 +9,7 @@ import PrivacyBanner from "@/components/PrivacyBanner";
 import SeasonalEffect from "@/components/effects/SeasonalEffect";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import RegisterServiceWorker from "@/components/RegisterServiceWorker";
+import GoogleReaderRevenue from "@/components/GoogleReaderRevenue";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -86,6 +87,7 @@ export default function RootLayout({
         <SeasonalEffect />
         <PWAInstallPrompt />
         <RegisterServiceWorker />
+        <GoogleReaderRevenue />
       </body>
     </html >
   );
