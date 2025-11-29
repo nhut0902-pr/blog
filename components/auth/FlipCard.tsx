@@ -90,7 +90,7 @@ export default function FlipCard() {
                     <span className="card-side"></span>
                 </label>
 
-                <div className="flip-card__inner">
+                <div className={`flip-card__inner ${isSignUp ? 'flipped' : ''}`}>
                     {/* Login Form */}
                     <div className="flip-card__front">
                         <form onSubmit={handleLogin} className="flip-card__form">

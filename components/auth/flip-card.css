@@ -137,11 +137,11 @@
     transform-style: preserve-3d;
 }
 
-.toggle:checked~.flip-card__inner {
+.flip-card__inner.flipped {
     transform: rotateY(180deg);
 }
 
-.toggle:checked~.flip-card__front {
+.flip-card__inner.flipped .flip-card__front {
     box-shadow: none;
 }
 
