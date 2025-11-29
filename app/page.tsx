@@ -4,6 +4,7 @@ import { useEffect, useState, useRef, useCallback } from 'react';
 import Link from 'next/link';
 import { MessageSquare, Heart, Calendar, User, X, Loader2 } from 'lucide-react';
 import PopularPosts from '@/components/PopularPosts';
+import HeroSection from '@/components/HeroSection';
 
 export default function HomePage() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -102,17 +103,10 @@ export default function HomePage() {
 
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-indigo-50/30 dark:from-gray-900 dark:via-gray-800 dark:to-indigo-950/30">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        {/* Header */}
-        <div className="text-center mb-8 sm:mb-12">
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent mb-3 sm:mb-4 px-4">
-            Blog Của Chúng Tôi
-          </h1>
-          <p className="text-base sm:text-lg lg:text-xl text-gray-600 dark:text-gray-300 px-4">
-            Khám phá những bài viết mới nhất và thú vị nhất
-          </p>
-        </div>
+        {/* Hero Section */}
+        <HeroSection />
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 lg:gap-8">
           {/* Main Content */}
