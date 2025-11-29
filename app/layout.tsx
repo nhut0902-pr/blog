@@ -7,6 +7,8 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PrivacyBanner from "@/components/PrivacyBanner";
 import SeasonalEffect from "@/components/effects/SeasonalEffect";
+import PWAInstallPrompt from "@/components/PWAInstallPrompt";
+import RegisterServiceWorker from "@/components/RegisterServiceWorker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -47,7 +49,19 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'google003c285f4d4d03ea',
-    // yandex: 'your-yandex-verification-code',
+  },
+  manifest: '/manifest.json',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'black-translucent',
+    title: 'BlogApp',
+  },
+  formatDetection: {
+    telephone: false,
+  },
+  icons: {
+    icon: '/icons/icon-192.png',
+    apple: '/icons/icon-192.png',
   },
 };
 
@@ -70,6 +84,8 @@ export default function RootLayout({
           </AuthProvider>
         </ThemeProvider>
         <SeasonalEffect />
+        <PWAInstallPrompt />
+        <RegisterServiceWorker />
       </body>
     </html >
   );
