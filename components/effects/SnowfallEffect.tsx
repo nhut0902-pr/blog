@@ -55,11 +55,8 @@ export default function SnowfallEffect() {
 
             draw() {
                 if (!ctx) return;
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.fill();
-                ctx.closePath();
+                ctx.font = `${this.radius * 8}px Arial`; // Scale emoji size
+                ctx.fillText('❄️', this.x, this.y);
             }
         }
 
