@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-// import { TrendingUp, Sparkles } from 'lucide-react';
-// import SearchBar from './SearchBar';
+import { TrendingUp, Sparkles } from 'lucide-react';
+import SearchBar from './SearchBar';
 
 interface FeaturedPost {
     id: string;
@@ -26,7 +26,6 @@ export default function HeroSection() {
         fetch('/api/posts/popular')
             .then((res) => res.json())
             .then((data) => {
-                console.log('HeroSection data:', data);
                 if (Array.isArray(data) && data.length > 0) {
                     setFeaturedPost(data[0]);
                 }
@@ -48,7 +47,7 @@ export default function HeroSection() {
                     {/* Left: Text Content */}
                     <div className="flex flex-col justify-center space-y-6">
                         <div className="inline-flex items-center space-x-2 text-sm font-semibold text-indigo-600 dark:text-indigo-400">
-                            {/* <Sparkles size={18} className="animate-pulse" /> */}
+                            <Sparkles size={18} className="animate-pulse" />
                             <span>✨ Bài viết nổi bật</span>
                         </div>
 
@@ -63,7 +62,7 @@ export default function HeroSection() {
                                     {featuredPost.title}
                                 </h1>
                                 <p className="text-lg text-gray-600 dark:text-gray-300 line-clamp-3">
-                                    {featuredPost.content.substring(0, 200)}...
+                                    {featuredPost.content ? featuredPost.content.substring(0, 200) : ''}...
                                 </p>
                                 <div className="flex items-center space-x-4 pt-4">
                                     <Link
@@ -71,7 +70,7 @@ export default function HeroSection() {
                                         className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold rounded-full hover:shadow-lg hover:scale-105 transition-all duration-300"
                                     >
                                         Đọc ngay
-                                        {/* <TrendingUp size={18} className="ml-2" /> */}
+                                        <TrendingUp size={18} className="ml-2" />
                                     </Link>
                                     <div className="text-sm text-gray-500 dark:text-gray-400">
                                         <span className="font-medium">{featuredPost.author?.name || 'Unknown'}</span>
@@ -113,10 +112,7 @@ export default function HeroSection() {
                                 <h3 className="text-xl font-bold text-gray-900 dark:text-white">
                                     Tìm kiếm bài viết
                                 </h3>
-                                {/* <SearchBar /> */}
-                                <div className="p-4 border rounded bg-gray-50 dark:bg-gray-800">
-                                    Search Bar Placeholder
-                                </div>
+                                <SearchBar />
                                 <div className="flex flex-wrap gap-2 mt-4">
                                     <span className="text-sm text-gray-500 dark:text-gray-400">Trending:</span>
                                     {['React', 'Next.js', 'TypeScript', 'Design'].map((tag) => (
