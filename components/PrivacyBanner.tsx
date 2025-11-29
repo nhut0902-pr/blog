@@ -8,11 +8,17 @@ export default function PrivacyBanner() {
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
+        console.log('PrivacyBanner mounted');
         // Check if user has already accepted
         const hasAccepted = localStorage.getItem('privacy-accepted');
+        console.log('Privacy accepted status:', hasAccepted);
+
         if (!hasAccepted) {
             // Show banner after a short delay
-            const timer = setTimeout(() => setIsVisible(true), 1000);
+            const timer = setTimeout(() => {
+                console.log('Showing PrivacyBanner');
+                setIsVisible(true);
+            }, 1000);
             return () => clearTimeout(timer);
         }
     }, []);
@@ -25,7 +31,7 @@ export default function PrivacyBanner() {
     if (!isVisible) return null;
 
     return (
-        <div className="fixed bottom-4 right-4 z-50 max-w-sm w-full animate-in slide-in-from-bottom-5 fade-in duration-500">
+        <div className="fixed bottom-4 right-4 z-[100] max-w-sm w-full transition-all duration-500 transform translate-y-0 opacity-100">
             <div className="relative bg-slate-900 border border-cyan-500/30 p-6 rounded-lg shadow-[0_0_30px_rgba(6,182,212,0.15)] backdrop-blur-xl overflow-hidden group">
 
                 {/* Tech decorative elements */}
