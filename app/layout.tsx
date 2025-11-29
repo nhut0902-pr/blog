@@ -63,6 +63,7 @@ export default function RootLayout({
             <main className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
               {children}
             </main>
+            <PrivacyBanner />
             <Footer />
           </AuthProvider>
         </ThemeProvider>
