@@ -29,7 +29,7 @@ interface ReelCardProps {
 export default function ReelCard({ reel, isActive, onOpenComments }: ReelCardProps) {
     const videoRef = useRef<HTMLVideoElement>(null);
     const [isPlaying, setIsPlaying] = useState(false);
-    const [isMuted, setIsMuted] = useState(true);
+    const [isMuted, setIsMuted] = useState(false);
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(reel._count.likes);
     const [isLiking, setIsLiking] = useState(false);
