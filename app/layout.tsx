@@ -11,6 +11,7 @@ import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import RegisterServiceWorker from "@/components/RegisterServiceWorker";
 import GoogleReaderRevenue from "@/components/GoogleReaderRevenue";
 import GoogleAuthProvider from "@/components/auth/GoogleAuthProvider";
+import SecurityAlert from "@/components/SecurityAlert";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -78,6 +79,7 @@ export default function RootLayout({
         <ThemeProvider>
           <AuthProvider>
             <GoogleAuthProvider>
+              <SecurityAlert />
               <Navbar />
               <main className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
                 {children}
