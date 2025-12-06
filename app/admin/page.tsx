@@ -56,7 +56,22 @@ export default async function AdminDashboard() {
             </div>
 
             {/* Quick Access Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                {/* Reels Card */}
+                <Link href="/reels/upload" className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-pink-500 dark:hover:border-pink-400 transition-all shadow-sm hover:shadow-md">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-1">Đăng Reels</h3>
+                            <p className="text-sm text-gray-500 dark:text-gray-400">Tải video ngắn lên</p>
+                        </div>
+                        <div className="text-pink-600 dark:text-pink-400">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                    </div>
+                </Link>
+
                 <Link href="/admin/comments" className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-indigo-500 dark:hover:border-indigo-400 transition-all shadow-sm hover:shadow-md">
                     <div className="flex items-center justify-between">
                         <div>

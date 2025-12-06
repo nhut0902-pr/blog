@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { User, Bookmark, PenSquare, LogOut, X, BarChart, Terminal } from 'lucide-react';
+import { User, Bookmark, PenSquare, LogOut, X, BarChart, Terminal, Film } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import SearchBar from './SearchBar';
 
@@ -81,6 +81,10 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                     <Bookmark size={18} className="mr-3" />
                                     SAVED_DATA
                                 </Link>
+                                <Link href="/reels" onClick={onClose} className="flex items-center p-3 text-pink-400 hover:text-pink-300 hover:bg-pink-950/30 border border-transparent hover:border-pink-500/30 rounded transition-all font-mono text-sm">
+                                    <Film size={18} className="mr-3" />
+                                    NHUTCODER_REELS
+                                </Link>
 
                                 {user.role === 'ADMIN' && (
                                     <div className="pt-4 mt-4 border-t border-slate-800">
@@ -99,6 +103,7 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                         </Link>
                                     </div>
                                 )}
+
 
                                 <button
                                     onClick={() => { logout(); onClose(); }}

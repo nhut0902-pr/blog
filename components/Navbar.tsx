@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { PenSquare, LogOut, User, BarChart, Menu, X, Bookmark } from 'lucide-react';
+import { PenSquare, LogOut, User, BarChart, Menu, X, Bookmark, Film } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import NotificationsDropdown from './NotificationsDropdown';
@@ -45,6 +45,14 @@ export default function Navbar() {
 
                         {/* Desktop Right side */}
                         <div className="hidden md:flex items-center space-x-4">
+                            <Link
+                                href="/reels"
+                                className="flex items-center space-x-1 text-sm font-mono text-pink-400 hover:text-pink-300 transition-colors"
+                                title="Nhutcoder Reels"
+                            >
+                                <Film size={18} />
+                                <span>Reels</span>
+                            </Link>
                             <ThemeToggle />
                             {user && <NotificationsDropdown />}
                             {user ? (

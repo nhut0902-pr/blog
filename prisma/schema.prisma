@@ -10,6 +10,7 @@ datasource db {
 model User {
   id                    String         @id @default(cuid())
   email                 String         @unique
+  googleId              String?        @unique
   password              String
   name                  String
   role                  Role           @default(USER)
@@ -24,6 +25,9 @@ model User {
   notificationsReceived Notification[] @relation("NotificationRecipient")
   notificationsSent     Notification[] @relation("NotificationSender")
   commentReactions      CommentReaction[]
+  reels                 Reel[]
+  reelLikes             ReelLike[]
+  reelComments          ReelComment[]
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 }
@@ -146,7 +150,51 @@ model SiteSetting {
   createdAt DateTime @default(now())
 }
 
+// Nhutcoder Reels - Video Feature
+model Reel {
+  id           String        @id @default(cuid())
+  title        String?
+  description  String?
+  videoUrl     String
+  thumbnailUrl String?
+  duration     Int?          // duration in seconds
+  views        Int           @default(0)
+  authorId     String
+  author       User          @relation(fields: [authorId], references: [id])
+  likes        ReelLike[]
+  comments     ReelComment[]
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+
+  @@index([authorId])
+  @@index([createdAt])
+}
+
+model ReelLike {
+  id        String   @id @default(cuid())
+  reelId    String
+  reel      Reel     @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([reelId, userId])
+}
+
+model ReelComment {
+  id        String   @id @default(cuid())
+  content   String
+  reelId    String
+  reel      Reel     @relation(fields: [reelId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([reelId])
+}
+
 enum Role {
   USER
   ADMIN
 }
+

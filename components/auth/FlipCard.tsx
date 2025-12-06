@@ -1,8 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
+import { Eye, EyeOff, Mail, Lock, User, ArrowRight, Loader2 } from 'lucide-react';
 import './flip-card.css';
+import GoogleLoginButton from './GoogleLoginButton';
 
 export default function FlipCard() {
     const router = useRouter();
@@ -35,9 +38,8 @@ export default function FlipCard() {
             const data = await res.json();
 
             if (res.ok) {
-                localStorage.setItem('token', data.token);
-                router.push('/');
-                router.refresh();
+                // Force full page reload to sync auth cookies and state
+                window.location.href = '/';
             } else {
                 setError(data.error || 'Đăng nhập thất bại');
             }
@@ -63,9 +65,8 @@ export default function FlipCard() {
             const data = await res.json();
 
             if (res.ok) {
-                localStorage.setItem('token', data.token);
-                router.push('/');
-                router.refresh();
+                // Force full page reload to sync auth cookies and state
+                window.location.href = '/';
             } else {
                 setError(data.error || 'Đăng ký thất bại');
             }
@@ -119,6 +120,27 @@ export default function FlipCard() {
                             <button className="flip-card__btn" type="submit" disabled={loading}>
                                 {loading ? 'Loading...' : "Let's go!"}
                             </button>
+                            <div className="text-right mb-4">
+                                <a href="#" className="text-xs text-cyan-400 hover:text-cyan-300 font-mono">Forgot_Password?</a>
+                            </div>
+                            <button
+                                type="submit"
+                                disabled={loading}
+                                className="w-full py-3 bg-cyan-600 hover:bg-cyan-500 text-white font-bold rounded flex items-center justify-center transition-all shadow-[0_0_15px_rgba(6,182,212,0.4)] disabled:opacity-50 disabled:cursor-not-allowed font-mono group"
+                            >
+                                {loading ? (
+                                    <Loader2 className="animate-spin mr-2" size={20} />
+                                ) : (
+                                    <>
+                                        ACCESS_SYSTEM <ArrowRight size={18} className="ml-2 group-hover:translate-x-1 transition-transform" />
+                                    </>
+                                )}
+                            </button>
+                            <div className="mt-4 relative flex items-center justify-center">
+                                <div className="border-t border-slate-700 w-full absolute"></div>
+                                <span className="bg-slate-900 px-2 text-xs text-slate-500 relative z-10 font-mono">OR_CONTINUE_WITH</span>
+                            </div>
+                            <GoogleLoginButton />
                         </form>
                     </div>
 

@@ -10,6 +10,7 @@ import SeasonalEffect from "@/components/effects/SeasonalEffect";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import RegisterServiceWorker from "@/components/RegisterServiceWorker";
 import GoogleReaderRevenue from "@/components/GoogleReaderRevenue";
+import GoogleAuthProvider from "@/components/auth/GoogleAuthProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -76,12 +77,14 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
-            <Navbar />
-            <main className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
-              {children}
-            </main>
-            <PrivacyBanner />
-            <Footer />
+            <GoogleAuthProvider>
+              <Navbar />
+              <main className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
+                {children}
+              </main>
+              <PrivacyBanner />
+              <Footer />
+            </GoogleAuthProvider>
           </AuthProvider>
         </ThemeProvider>
         <SeasonalEffect />
