@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { Heart, MessageCircle, Share2, Play, Pause, Volume2, VolumeX } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Play, Pause, Volume2, VolumeX, Edit } from 'lucide-react';
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
+import ReelEditModal from './ReelEditModal';
 
 interface ReelCardProps {
     reel: {
@@ -33,6 +35,9 @@ export default function ReelCard({ reel, isActive, onOpenComments }: ReelCardPro
     const [liked, setLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(reel._count.likes);
     const [isLiking, setIsLiking] = useState(false);
+    const { user } = useAuth();
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+    const [currentReel, setCurrentReel] = useState(reel);
 
     useEffect(() => {
         if (videoRef.current) {
@@ -97,14 +102,18 @@ export default function ReelCard({ reel, isActive, onOpenComments }: ReelCardPro
     const handleShare = async () => {
         try {
             await navigator.share({
-                title: reel.title || 'Nhutcoder Reels',
-                url: `${window.location.origin}/reels/${reel.id}`
+                title: currentReel.title || 'Nhutcoder Reels',
+                url: `${window.location.origin}/reels/${currentReel.id}`
             });
         } catch {
             // Fallback: copy to clipboard
-            navigator.clipboard.writeText(`${window.location.origin}/reels/${reel.id}`);
+            navigator.clipboard.writeText(`${window.location.origin}/reels/${currentReel.id}`);
             alert('Đã copy link!');
         }
+    };
+
+    const handleUpdate = (id: string, title: string, description: string) => {
+        setCurrentReel(prev => ({ ...prev, title, description }));
     };
 
     return (
@@ -177,6 +186,19 @@ export default function ReelCard({ reel, isActive, onOpenComments }: ReelCardPro
                     </div>
                     <span className="text-white text-xs mt-1">Chia sẻ</span>
                 </button>
+
+                {/* Edit button (Admin only) */}
+                {user?.role === 'ADMIN' && (
+                    <button
+                        onClick={() => setIsEditModalOpen(true)}
+                        className="flex flex-col items-center"
+                    >
+                        <div className="p-3 rounded-full bg-black/50 hover:bg-indigo-600/50 transition-colors">
+                            <Edit className="w-7 h-7 text-white" />
+                        </div>
+                        <span className="text-white text-xs mt-1">Sửa</span>
+                    </button>
+                )}
             </div>
 
             {/* Gradient Overlay for text readability */}
@@ -201,16 +223,23 @@ export default function ReelCard({ reel, isActive, onOpenComments }: ReelCardPro
                     <span className="text-white font-semibold">@{reel.author.name}</span>
                 </Link>
 
-                {reel.title && (
-                    <p className="text-white font-medium mb-1">{reel.title}</p>
+                {currentReel.title && (
+                    <p className="text-white font-medium mb-1">{currentReel.title}</p>
                 )}
 
-                {reel.description && (
-                    <p className="text-white/80 text-sm line-clamp-2">{reel.description}</p>
+                {currentReel.description && (
+                    <p className="text-white/80 text-sm line-clamp-2">{currentReel.description}</p>
                 )}
 
-                <p className="text-white/60 text-xs mt-2">{reel.views} lượt xem</p>
+                <p className="text-white/60 text-xs mt-2">{currentReel.views} lượt xem</p>
             </div>
+
+            <ReelEditModal
+                isOpen={isEditModalOpen}
+                onClose={() => setIsEditModalOpen(false)}
+                reel={currentReel}
+                onUpdate={handleUpdate}
+            />
         </div>
     );
 }
