@@ -179,8 +179,11 @@ export default function ReelCard({ reel, isActive, onOpenComments }: ReelCardPro
                 </button>
             </div>
 
+            {/* Gradient Overlay for text readability */}
+            <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
+
             {/* Bottom info */}
-            <div className="absolute bottom-8 left-4 right-20">
+            <div className="absolute bottom-8 left-4 right-20 z-10">
                 <Link href={`/profile/${reel.author.id}`} className="flex items-center gap-2 mb-2">
                     {reel.author.avatarUrl ? (
                         <img
