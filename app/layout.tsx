@@ -12,6 +12,7 @@ import RegisterServiceWorker from "@/components/RegisterServiceWorker";
 import GoogleReaderRevenue from "@/components/GoogleReaderRevenue";
 import GoogleAuthProvider from "@/components/auth/GoogleAuthProvider";
 import SecurityAlert from "@/components/SecurityAlert";
+import TawkToChat from "@/components/TawkToChat";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -93,6 +94,11 @@ export default function RootLayout({
         <PWAInstallPrompt />
         <RegisterServiceWorker />
         <GoogleReaderRevenue />
+        {/* Tawk.to Live Chat - Replace with your Property ID and Widget ID */}
+        <TawkToChat
+          propertyId={process.env.NEXT_PUBLIC_TAWKTO_PROPERTY_ID || ''}
+          widgetId={process.env.NEXT_PUBLIC_TAWKTO_WIDGET_ID || '1'}
+        />
       </body>
     </html >
   );
