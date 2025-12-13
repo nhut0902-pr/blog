@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { ThemeProvider } from "@/context/ThemeContext";
+import { CartProvider } from "@/context/CartContext";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import PrivacyBanner from "@/components/PrivacyBanner";
@@ -79,7 +80,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <ThemeProvider>
           <AuthProvider>
-            <GoogleAuthProvider>
+            <CartProvider>
+              <GoogleAuthProvider>
               <SecurityAlert />
               <Navbar />
               <main className="min-h-screen bg-white dark:bg-gray-900 transition-colors">
@@ -87,7 +89,8 @@ export default function RootLayout({
               </main>
               <PrivacyBanner />
               <Footer />
-            </GoogleAuthProvider>
+              </GoogleAuthProvider>
+            </CartProvider>
           </AuthProvider>
         </ThemeProvider>
         <SeasonalEffect />

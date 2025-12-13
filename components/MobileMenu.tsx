@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { User, Bookmark, PenSquare, LogOut, X, BarChart, Terminal, Film } from 'lucide-react';
+import { User, Bookmark, PenSquare, LogOut, X, BarChart, Terminal, Film, ShoppingCart } from 'lucide-react';
+import AdminNotificationBadge from './AdminNotificationBadge';
 import { useAuth } from '@/context/AuthContext';
 import SearchBar from './SearchBar';
 
@@ -81,6 +82,14 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                     <Bookmark size={18} className="mr-3" />
                                     SAVED_DATA
                                 </Link>
+                                <Link href="/cart" onClick={onClose} className="flex items-center p-3 text-green-400 hover:text-green-300 hover:bg-green-950/30 border border-transparent hover:border-green-500/30 rounded transition-all font-mono text-sm">
+                                    <ShoppingCart size={18} className="mr-3" />
+                                    SHOPPING_CART
+                                </Link>
+                                <Link href="/store" onClick={onClose} className="flex items-center p-3 text-green-400 hover:text-green-300 hover:bg-green-950/30 border border-transparent hover:border-green-500/30 rounded transition-all font-mono text-sm">
+                                    <ShoppingCart size={18} className="mr-3" />
+                                    SOURCE_CODE_STORE
+                                </Link>
                                 <Link href="/reels" onClick={onClose} className="flex items-center p-3 text-pink-400 hover:text-pink-300 hover:bg-pink-950/30 border border-transparent hover:border-pink-500/30 rounded transition-all font-mono text-sm">
                                     <Film size={18} className="mr-3" />
                                     NHUTCODER_REELS
@@ -92,6 +101,15 @@ export default function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
                                         <Link href="/admin" onClick={onClose} className="flex items-center p-3 text-red-400 hover:bg-red-950/20 border border-transparent hover:border-red-500/30 rounded transition-all font-mono text-sm">
                                             <PenSquare size={18} className="mr-3" />
                                             ADMIN_CONSOLE
+                                        </Link>
+                                        <Link href="/admin/store" onClick={onClose} className="flex items-center p-3 text-green-400 hover:bg-green-950/20 border border-transparent hover:border-green-500/30 rounded transition-all font-mono text-sm">
+                                            <ShoppingCart size={18} className="mr-3" />
+                                            STORE_MANAGEMENT
+                                        </Link>
+                                        <Link href="/admin/purchases" onClick={onClose} className="flex items-center p-3 text-purple-400 hover:bg-purple-950/20 border border-transparent hover:border-purple-500/30 rounded transition-all font-mono text-sm relative">
+                                            <ShoppingCart size={18} className="mr-3" />
+                                            PURCHASE_ORDERS
+                                            <AdminNotificationBadge />
                                         </Link>
                                         <Link href="/admin/analytics" onClick={onClose} className="flex items-center p-3 text-green-400 hover:bg-green-950/20 border border-transparent hover:border-green-500/30 rounded transition-all font-mono text-sm">
                                             <BarChart size={18} className="mr-3" />

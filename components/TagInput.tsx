@@ -34,17 +34,17 @@ export default function TagInput({ value, onChange, placeholder = 'Thêm tag...'
     };
 
     return (
-        <div className="flex flex-wrap gap-2 p-2 border border-gray-300 rounded-md focus-within:ring-2 focus-within:ring-indigo-500 focus-within:border-indigo-500">
+        <div className="flex flex-wrap gap-2 p-3 bg-slate-800 border border-slate-700 rounded focus-within:border-cyan-500 transition-colors">
             {value.map((tag, index) => (
                 <span
                     key={index}
-                    className="inline-flex items-center px-2 py-1 text-sm bg-indigo-100 text-indigo-800 rounded-md"
+                    className="inline-flex items-center px-2 py-1 text-sm bg-cyan-500/20 text-cyan-400 rounded border border-cyan-500/30 font-mono"
                 >
-                    {tag}
+                    #{tag}
                     <button
                         type="button"
                         onClick={() => removeTag(index)}
-                        className="ml-1 hover:text-indigo-600"
+                        className="ml-1 hover:text-cyan-300 transition-colors"
                     >
                         <X size={14} />
                     </button>
@@ -57,7 +57,7 @@ export default function TagInput({ value, onChange, placeholder = 'Thêm tag...'
                 onKeyDown={handleKeyDown}
                 onBlur={addTag}
                 placeholder={value.length === 0 ? placeholder : ''}
-                className="flex-1 min-w-[120px] outline-none text-sm"
+                className="flex-1 min-w-[120px] outline-none text-sm bg-transparent text-white placeholder-slate-500"
             />
         </div>
     );

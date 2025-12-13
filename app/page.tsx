@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { MessageSquare, Heart, Calendar, User, X, Loader2 } from 'lucide-react';
 import PopularPosts from '@/components/PopularPosts';
 import HeroSection from '@/components/HeroSection';
+import FeaturedStore from '@/components/FeaturedStore';
 
 export default function HomePage() {
   const [posts, setPosts] = useState<any[]>([]);
@@ -318,6 +319,7 @@ export default function HomePage() {
           {/* Sidebar */}
           <div className="lg:col-span-1 space-y-8">
             <PopularPosts />
+            <FeaturedStore />
 
             {/* Newsletter or other widgets could go here */}
             <div className="bg-gradient-to-br from-indigo-600 to-purple-600 rounded-xl shadow-lg p-6 text-white">

@@ -6,6 +6,7 @@ import { redirect } from 'next/navigation';
 import { Plus, Edit, Trash2 } from 'lucide-react';
 import DeletePostButton from '@/components/DeletePostButton';
 import SeasonalEffectToggle from '@/components/admin/SeasonalEffectToggle';
+import StoreStats from '@/components/admin/StoreStats';
 
 export const dynamic = 'force-dynamic';
 
@@ -55,8 +56,40 @@ export default async function AdminDashboard() {
                 <SeasonalEffectToggle />
             </div>
 
+            {/* Store Stats */}
+            <StoreStats />
+
             {/* Quick Access Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {/* Store Management Card */}
+                <Link href="/admin/store" className="bg-gradient-to-br from-green-600 to-emerald-600 p-6 rounded-lg hover:from-green-500 hover:to-emerald-500 transition-all shadow-lg hover:shadow-xl text-white">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-lg font-semibold mb-1">Store Management</h3>
+                            <p className="text-sm text-green-100">Quản lý source code</p>
+                        </div>
+                        <div className="text-green-100">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                            </svg>
+                        </div>
+                    </div>
+                </Link>
+
+                {/* Purchase Orders Card */}
+                <Link href="/admin/purchases" className="bg-gradient-to-br from-purple-600 to-indigo-600 p-6 rounded-lg hover:from-purple-500 hover:to-indigo-500 transition-all shadow-lg hover:shadow-xl text-white">
+                    <div className="flex items-center justify-between">
+                        <div>
+                            <h3 className="text-lg font-semibold mb-1">Purchase Orders</h3>
+                            <p className="text-sm text-purple-100">Quản lý đơn hàng</p>
+                        </div>
+                        <div className="text-purple-100">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                            </svg>
+                        </div>
+                    </div>
+                </Link>
                 {/* Reels Card */}
                 <Link href="/reels/upload" className="bg-white dark:bg-gray-800 p-6 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-pink-500 dark:hover:border-pink-400 transition-all shadow-sm hover:shadow-md">
                     <div className="flex items-center justify-between">

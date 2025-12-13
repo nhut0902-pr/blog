@@ -1,15 +1,21 @@
-import { NextResponse } from 'next/server';
-import ImageKit from 'imagekit';
+import { NextRequest, NextResponse } from 'next/server';
+import { writeFile } from 'fs/promises';
+import { join } from 'path';
+import { verifyJWT } from '@/lib/auth';
 
-// Initialize ImageKit
-const imagekit = new ImageKit({
-    publicKey: process.env.IMAGEKIT_PUBLIC_KEY || '',
-    privateKey: process.env.IMAGEKIT_PRIVATE_KEY || '',
-    urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT || '',
-});
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
+        // Verify authentication
+        const token = request.cookies.get('token')?.value;
+        if (!token) {
+            return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+        }
+
+        const payload = await verifyJWT(token);
+        if (!payload) {
+            return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
+        }
+
         const formData = await request.formData();
         const file = formData.get('file') as File;
 
@@ -18,36 +24,47 @@ export async function POST(request: Request) {
         }
 
         // Validate file type
-        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
-        if (!validTypes.includes(file.type)) {
-            return NextResponse.json({ error: 'Invalid file type' }, { status: 400 });
+        if (!file.type.startsWith('image/')) {
+            return NextResponse.json({ error: 'Only image files are allowed' }, { status: 400 });
         }
 
-        // Validate file size (5MB max)
-        const maxSize = 5 * 1024 * 1024;
-        if (file.size > maxSize) {
-            return NextResponse.json({ error: 'File too large (max 5MB)' }, { status: 400 });
+        // Validate file size (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            return NextResponse.json({ error: 'File size must be less than 5MB' }, { status: 400 });
         }
 
-        // Convert file to buffer
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        // Upload to ImageKit
-        const result = await imagekit.upload({
-            file: buffer.toString('base64'),
-            fileName: file.name,
-            folder: '/blog-uploads',
-            useUniqueFileName: true,
-        });
+        // Generate unique filename
+        const timestamp = Date.now();
+        const randomString = Math.random().toString(36).substring(2, 15);
+        const extension = file.name.split('.').pop();
+        const filename = `${timestamp}-${randomString}.${extension}`;
 
-        return NextResponse.json({
-            url: result.url,
-            fileId: result.fileId,
-            thumbnailUrl: result.thumbnailUrl,
-        });
+        // Save to public/uploads directory
+        const uploadDir = join(process.cwd(), 'public', 'uploads');
+        const filePath = join(uploadDir, filename);
+
+        // Create uploads directory if it doesn't exist
+        try {
+            await writeFile(filePath, buffer);
+        } catch (error) {
+            // If directory doesn't exist, create it
+            const { mkdir } = await import('fs/promises');
+            await mkdir(uploadDir, { recursive: true });
+            await writeFile(filePath, buffer);
+        }
+
+        // Return the public URL
+        const url = `/uploads/${filename}`;
+
+        return NextResponse.json({ url }, { status: 200 });
     } catch (error) {
         console.error('Upload error:', error);
-        return NextResponse.json({ error: 'Error uploading file' }, { status: 500 });
+        return NextResponse.json(
+            { error: 'Failed to upload file' },
+            { status: 500 }
+        );
     }
 }

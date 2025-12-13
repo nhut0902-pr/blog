@@ -28,6 +28,8 @@ model User {
   reels                 Reel[]
   reelLikes             ReelLike[]
   reelComments          ReelComment[]
+  sourceCodes           SourceCode[]
+  purchases             Purchase[]
   createdAt             DateTime       @default(now())
   updatedAt             DateTime       @updatedAt
 }
@@ -191,6 +193,53 @@ model ReelComment {
   createdAt DateTime @default(now())
 
   @@index([reelId])
+}
+
+// Source Code Store
+model SourceCode {
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  price       Float
+  imageUrl    String?
+  demoUrl     String?
+  downloadUrl String?  // Link to download after purchase
+  tags        String[]
+  category    String?
+  featured    Boolean  @default(false)
+  active      Boolean  @default(true)
+  authorId    String
+  author      User     @relation(fields: [authorId], references: [id])
+  purchases   Purchase[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([authorId])
+  @@index([featured])
+  @@index([active])
+}
+
+model Purchase {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id])
+  sourceCodeId String
+  sourceCode   SourceCode @relation(fields: [sourceCodeId], references: [id])
+  amount       Float
+  status       PurchaseStatus @default(PENDING)
+  contactInfo  String?    // Contact information for admin
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+
+  @@unique([userId, sourceCodeId])
+  @@index([userId])
+  @@index([status])
+}
+
+enum PurchaseStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
 }
 
 enum Role {

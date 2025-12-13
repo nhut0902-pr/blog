@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import { useAuth } from '@/context/AuthContext';
 import { useRouter } from 'next/navigation';
-import { PenSquare, LogOut, User, BarChart, Menu, X, Bookmark, Film } from 'lucide-react';
+import { PenSquare, LogOut, User, BarChart, Menu, X, Bookmark, Film, ShoppingCart, Plus } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import SearchBar from './SearchBar';
 import NotificationsDropdown from './NotificationsDropdown';
 import MobileMenu from './MobileMenu';
+import CartDropdown from './CartDropdown';
 import { useState } from 'react';
 
 export default function Navbar() {
@@ -46,6 +47,17 @@ export default function Navbar() {
                         {/* Desktop Right side */}
                         <div className="hidden md:flex items-center space-x-4">
                             <Link
+                                href="/store"
+                                className="flex items-center space-x-1 text-sm font-mono text-green-400 hover:text-green-300 transition-colors relative"
+                                title="Source Code Store"
+                            >
+                                <ShoppingCart size={18} />
+                                <span>Store</span>
+                                <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full font-bold animate-pulse">
+                                    NEW
+                                </span>
+                            </Link>
+                            <Link
                                 href="/reels"
                                 className="flex items-center space-x-1 text-sm font-mono text-pink-400 hover:text-pink-300 transition-colors"
                                 title="Nhutcoder Reels"
@@ -53,6 +65,7 @@ export default function Navbar() {
                                 <Film size={18} />
                                 <span>Reels</span>
                             </Link>
+                            <CartDropdown />
                             <ThemeToggle />
                             {user && <NotificationsDropdown />}
                             {user ? (
@@ -66,13 +79,23 @@ export default function Navbar() {
                                         <span>{user.name}</span>
                                     </Link>
                                     {user.role === 'ADMIN' && (
-                                        <Link
-                                            href="/admin"
-                                            className="p-2 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-900/20 rounded transition-colors"
-                                            title="Admin Dashboard"
-                                        >
-                                            <PenSquare size={18} />
-                                        </Link>
+                                        <>
+                                            <Link
+                                                href="/admin/store/create"
+                                                className="flex items-center space-x-1 text-sm font-mono text-yellow-400 hover:text-yellow-300 transition-colors"
+                                                title="Đăng sản phẩm"
+                                            >
+                                                <Plus size={18} />
+                                                <span>Sell</span>
+                                            </Link>
+                                            <Link
+                                                href="/admin"
+                                                className="p-2 text-indigo-400 hover:text-indigo-300 hover:bg-indigo-900/20 rounded transition-colors"
+                                                title="Admin Dashboard"
+                                            >
+                                                <PenSquare size={18} />
+                                            </Link>
+                                        </>
                                     )}
                                     <button
                                         onClick={handleLogout}

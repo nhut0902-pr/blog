@@ -65,7 +65,7 @@ export default function ImageUpload({ value, onChange, label = 'Tải ảnh lên
 
     return (
         <div className="space-y-2">
-            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label className="block text-slate-300 text-sm font-mono mb-2">
                 {label}
             </label>
 
@@ -74,18 +74,18 @@ export default function ImageUpload({ value, onChange, label = 'Tải ảnh lên
                     <img
                         src={value}
                         alt="Preview"
-                        className="w-full h-48 object-cover rounded-lg border border-gray-300 dark:border-gray-600"
+                        className="w-full h-48 object-cover rounded border border-slate-700"
                     />
                     <button
                         type="button"
                         onClick={handleRemove}
-                        className="absolute top-2 right-2 p-2 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors shadow-lg"
+                        className="absolute top-2 right-2 p-2 bg-red-500/80 text-white rounded hover:bg-red-500 transition-colors backdrop-blur-sm"
                     >
                         <X size={16} />
                     </button>
                 </div>
             ) : (
-                <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center hover:border-indigo-500 dark:hover:border-indigo-400 transition-colors">
+                <div className="border-2 border-dashed border-slate-700 rounded p-6 text-center hover:border-cyan-500 transition-colors bg-slate-800/30">
                     <input
                         ref={fileInputRef}
                         type="file"
@@ -101,17 +101,17 @@ export default function ImageUpload({ value, onChange, label = 'Tải ảnh lên
                     >
                         {uploading ? (
                             <>
-                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mb-3"></div>
-                                <p className="text-sm text-gray-600 dark:text-gray-400">Đang tải lên...</p>
+                                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-600 mb-3"></div>
+                                <p className="text-sm text-slate-400 font-mono">UPLOADING...</p>
                             </>
                         ) : (
                             <>
-                                <ImageIcon size={48} className="text-gray-400 mb-3" />
-                                <p className="text-sm text-gray-600 dark:text-gray-400 mb-1">
-                                    Click để chọn ảnh hoặc kéo thả vào đây
+                                <ImageIcon size={48} className="text-slate-600 mb-3" />
+                                <p className="text-sm text-slate-400 mb-1 font-mono">
+                                    CLICK_TO_SELECT_IMAGE
                                 </p>
-                                <p className="text-xs text-gray-500 dark:text-gray-500">
-                                    PNG, JPG, WebP (tối đa 5MB)
+                                <p className="text-xs text-slate-500 font-mono">
+                                    PNG, JPG, WebP (MAX_5MB)
                                 </p>
                             </>
                         )}
@@ -120,7 +120,7 @@ export default function ImageUpload({ value, onChange, label = 'Tải ảnh lên
             )}
 
             {error && (
-                <p className="text-sm text-red-600 dark:text-red-400">{error}</p>
+                <p className="text-sm text-red-400 font-mono">{error}</p>
             )}
         </div>
     );
