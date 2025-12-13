@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
-import { ArrowLeft, ExternalLink, ShoppingCart, Star, Code, MessageCircle, Loader2 } from 'lucide-react';
+import { ArrowLeft, ExternalLink, ShoppingCart, Star, Code, MessageCircle, Loader2, CreditCard } from 'lucide-react';
 import { useCart } from '@/context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import Link from 'next/link';
@@ -37,6 +37,7 @@ export default function SourceCodeDetailPage() {
     const [purchasing, setPurchasing] = useState(false);
     const [contactInfo, setContactInfo] = useState('');
     const [showPurchaseForm, setShowPurchaseForm] = useState(false);
+    const [paymentMethod, setPaymentMethod] = useState<'contact' | 'vietqr'>('contact');
     const { addToCart } = useCart();
 
     useEffect(() => {
@@ -77,6 +78,7 @@ export default function SourceCodeDetailPage() {
 
         setPurchasing(true);
         try {
+            // Contact method only (QR payment coming soon)
             const res = await fetch(`/api/store/${params.id}/purchase`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -300,6 +302,30 @@ export default function SourceCodeDetailPage() {
                         </h2>
                         
                         <form onSubmit={handlePurchase} className="space-y-4">
+                            {/* Payment Method Selection */}
+                            <div>
+                                <label className="block text-slate-300 text-sm mb-3 font-mono">
+                                    PAYMENT_METHOD *
+                                </label>
+                                <div className="grid grid-cols-2 gap-3">
+                                    <div className="p-3 rounded border bg-slate-800 border-slate-700 text-slate-500 font-mono text-sm text-center relative">
+                                        <CreditCard size={16} className="mx-auto mb-1 opacity-50" />
+                                        VietQR
+                                        <div className="absolute inset-0 bg-slate-900/80 rounded flex items-center justify-center">
+                                            <span className="text-xs text-yellow-400 font-mono">COMING_SOON</span>
+                                        </div>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={() => setPaymentMethod('contact')}
+                                        className="p-3 rounded border bg-cyan-600 border-cyan-500 text-white font-mono text-sm"
+                                    >
+                                        <MessageCircle size={16} className="mx-auto mb-1" />
+                                        Contact Admin
+                                    </button>
+                                </div>
+                            </div>
+
                             <div>
                                 <label className="block text-slate-300 text-sm mb-2 font-mono">
                                     CONTACT_INFO *
@@ -317,6 +343,13 @@ export default function SourceCodeDetailPage() {
                             <div className="bg-slate-800/50 border border-slate-700 rounded p-4">
                                 <p className="text-slate-400 text-sm font-mono">
                                     <span className="text-cyan-400">&gt;</span> Admin sẽ liên hệ với bạn để xác nhận đơn hàng và hướng dẫn thanh toán.
+                                </p>
+                            </div>
+
+                            {/* QR Payment Coming Soon Notice */}
+                            <div className="bg-yellow-500/10 border border-yellow-500/30 rounded p-3">
+                                <p className="text-yellow-400 text-xs font-mono text-center">
+                                    🚧 TÍNH NĂNG THANH TOÁN QR ĐANG PHÁT TRIỂN 🚧
                                 </p>
                             </div>
 
@@ -344,6 +377,8 @@ export default function SourceCodeDetailPage() {
                     </div>
                 </div>
             )}
+
+
         </div>
     );
 }
