@@ -54,6 +54,9 @@ export const metadata: Metadata = {
   },
   verification: {
     google: 'google003c285f4d4d03ea',
+    other: {
+      'tiktok-developers-site-verification': 's8XGdmU6h4xoxw8wbquvMxMW8CkB78vj',
+    },
   },
   manifest: '/manifest.json',
   appleWebApp: {
